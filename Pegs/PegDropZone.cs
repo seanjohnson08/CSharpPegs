@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Drawing;
 
 namespace Pegs
 {
@@ -42,25 +41,49 @@ namespace Pegs
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:Peg/>
+    ///     <MyNamespace:CustomControl1/>
     ///
     /// </summary>
-    public class Peg : Control
+    public class PegDropZone : Control
     {
-        static Peg()
+        static PegDropZone()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Peg), new FrameworkPropertyMetadata(typeof(Peg)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PegDropZone), new FrameworkPropertyMetadata(typeof(PegDropZone)));
+        }
+        
+        public PegDropZone()
+        {
+            this.AllowDrop = true;
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        public delegate void PegSwappedHandler(object sender, IntPoint from, IntPoint to);
+        public event PegSwappedHandler PegSwapped;
+
+        protected override void OnDragOver(DragEventArgs e)
         {
-            int x = Grid.GetRow(this);
-            int y = Grid.GetColumn(this);
+            base.OnDragOver(e);
 
-            DataObject data = new DataObject();
-            data.SetData(new IntPoint(x, y));
+            if (e.Data.GetDataPresent(typeof(IntPoint)))
+            {
+                e.Effects = DragDropEffects.Move;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
 
-            DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+            e.Handled = true;
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(IntPoint)))
+            {
+                IntPoint from = (IntPoint)e.Data.GetData(typeof(IntPoint));
+                IntPoint to = new IntPoint(Grid.GetRow(this), Grid.GetColumn(this));
+
+                PegSwapped?.Invoke(this, from, to);
+            }
         }
     }
 }

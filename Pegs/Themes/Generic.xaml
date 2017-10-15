@@ -8,12 +8,23 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Peg}">
-                    <Button Content="{TemplateBinding Content}" Background="{TemplateBinding Background}">
+                    <Grid>
+                        <Ellipse Fill="Blue"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:PegDropZone}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:PegDropZone}">
+                    <Button>
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid>
-                                    <Ellipse Fill="{TemplateBinding Background}"/>
-                                    <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Ellipse Fill="DarkSlateGray"/>
                                 </Grid>
                             </ControlTemplate>
                         </Button.Template>
