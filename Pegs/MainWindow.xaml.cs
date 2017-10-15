@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace Pegs
 {
-    enum PegState { None, Peg, NoPeg };
+    enum PegState { Invalid, Peg, NoPeg };
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -33,9 +33,9 @@ namespace Pegs
             }
         };
 
-        private int[,] gameState = null;
+        private PegState[,] gameState = null;
 
-        private void DrawBoard(int[,] board)
+        private void DrawBoard(PegState[,] board)
         {
             // Clear board
             this.MainView.RowDefinitions.Clear();
@@ -65,19 +65,21 @@ namespace Pegs
                 {
                     switch (board[i,j])
                     {
-                        case 0:
+                        case PegState.Invalid:
                             break;
-                        case 1:
+
+                        case PegState.Peg:
                             Peg peg = new Peg();
                             Grid.SetRow(peg, i);
                             Grid.SetColumn(peg, j);
-                            this.MainView.Children.Add(peg);
+                            MainView.Children.Add(peg);
                             break;
-                        case 2:
+
+                        case PegState.NoPeg:
                             PegDropZone dropZone = new PegDropZone();
                             Grid.SetRow(dropZone, i);
                             Grid.SetColumn(dropZone, j);
-                            this.MainView.Children.Add(dropZone);
+                            MainView.Children.Add(dropZone);
                             dropZone.PegSwapped += DropZone_PegSwapped;
                             break;
                     }
@@ -94,7 +96,7 @@ namespace Pegs
                     Math.Abs(from.Y - to.Y) == 2 && from.X == to.X
                 ) &&
                     // Check to make sure there's a peg in between
-                    (PegState)gameState[(from.X + to.X) / 2, (from.Y + to.Y) / 2] == PegState.Peg;
+                    gameState[(from.X + to.X) / 2, (from.Y + to.Y) / 2] == PegState.Peg;
         }
 
         private void DropZone_PegSwapped(object sender, IntPoint from, IntPoint to)
@@ -105,13 +107,13 @@ namespace Pegs
             }
 
             // Empty where the peg is leaving from
-            gameState[from.X, from.Y] = (int)PegState.NoPeg;
+            gameState[from.X, from.Y] = PegState.NoPeg;
 
             // Remove the peg that was jumped
-            gameState[(from.X + to.X) / 2, (from.Y + to.Y) / 2] = (int)PegState.NoPeg;
+            gameState[(from.X + to.X) / 2, (from.Y + to.Y) / 2] = PegState.NoPeg;
 
             // Add the peg to its final destination
-            gameState[to.X, to.Y] = (int)PegState.Peg;
+            gameState[to.X, to.Y] = PegState.Peg;
 
             // Redraw the game board
             DrawBoard(gameState);
@@ -119,10 +121,20 @@ namespace Pegs
 
         private void NewGameBtn_Click(object sender, RoutedEventArgs e)
         {
-            Console.Write("New Game Clicked");
+            // Choose a board to use
+            int[,] board = GameBoards[0];
 
-            int[,] GameBoard = GameBoards[0];
-            gameState = (int[,])GameBoard.Clone();
+            // Reset game state by copying blueprint onto gameState
+            gameState = new PegState[board.GetLength(0), board.GetLength(1)];
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    gameState[i,j] = (PegState)board[i,j];
+                }
+            }
+
+            // Draw the board
             DrawBoard(gameState);
         }
     }
