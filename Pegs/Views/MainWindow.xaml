@@ -11,7 +11,9 @@
             <MenuItem x:Name="NewGameBtn" Header="New Game" Click="NewGameBtn_Click"/>
         </Menu>
         <Viewbox>
-            <Grid x:Name="MainView" MinWidth="300" MinHeight="300"/>
+            <ContentPresenter x:Name="MainView" MinWidth="300" MinHeight="300">
+
+            </ContentPresenter>
         </Viewbox>
     </DockPanel>
 </Window>

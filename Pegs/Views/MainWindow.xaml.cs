@@ -24,7 +24,7 @@ namespace Pegs
         }
 
         private GameBoard[] GameBoards = new GameBoard[] {
-            new SquareGameBoard(new int[,] {
+            new RectangleGameBoard(new int[,] {
                 {0, 0, 1, 1, 1, 0, 0},
                 {0, 0, 1, 1, 1, 0, 0},
                 {1, 1, 1, 1, 1, 1, 1},

@@ -16,12 +16,13 @@ namespace Pegs.Controllers
         public GameController(GameView view, GameBoard model) {
             _view = view;
             _model = model;
+            _view.SetController(this);
         }
 
-        public void LoadView(System.Windows.Controls.Panel panel)
+        public void LoadView(System.Windows.Controls.ContentPresenter panel)
         {
-            _view.RenderTo(panel);
             _view.SetGameState(_model.GameState);
+            _view.RenderTo(panel);
             _view.Render();
         }
 

@@ -34,9 +34,9 @@ namespace Pegs.Models
         }
     }
 
-    public class SquareGameBoard : GameBoard
+    public class RectangleGameBoard : GameBoard
     {
-        public SquareGameBoard(int[,] board) : base(board) { }
+        public RectangleGameBoard(int[,] board) : base(board) { }
     }
 
     public class TriangleGameBoard : GameBoard

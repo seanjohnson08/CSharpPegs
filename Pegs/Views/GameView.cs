@@ -12,9 +12,13 @@ namespace Pegs.Views
         protected PegState[,] _gameState = null;
         protected Controllers.GameController _controller = null;
 
-        public virtual void RenderTo(Panel view) {
-        }
+        public virtual void RenderTo(ContentPresenter view) {}
         public abstract void Render();
+        
+        public void SetController(Controllers.GameController controller)
+        {
+            _controller = controller;
+        }
 
         public void DropZone_PegSwapped(object sender, IntPoint from, IntPoint to)
         {
@@ -30,14 +34,11 @@ namespace Pegs.Views
     class RectangleGameView: GameView {
         private Grid _gridView = null;
 
-        public void SetController(Controllers.GameController controller)
+        override public void RenderTo(ContentPresenter presenter)
         {
-            _controller = controller;
-        }
 
-        override public void RenderTo(Panel view)
-        {
-            _gridView = view as Grid;
+            _gridView = new Grid();
+            presenter.Content = _gridView;
         }
 
         override public void Render()
