@@ -23,8 +23,8 @@ namespace Pegs
             InitializeComponent();
         }
 
-        private GameBoard[] GameBoards = new GameBoard[] {
-            new RectangleGameBoard(new int[,] {
+        private PegBoard[] GameBoards = new PegBoard[] {
+            new RectanglePegBoard(new int[,] {
                 {0, 0, 1, 1, 1, 0, 0},
                 {0, 0, 1, 1, 1, 0, 0},
                 {1, 1, 1, 1, 1, 1, 1},
@@ -33,7 +33,7 @@ namespace Pegs
                 {0, 0, 1, 1, 1, 0, 0},
                 {0, 0, 1, 1, 1, 0, 0},
             }),
-            new TriangleGameBoard(new int[,] {
+            new TrianglePegBoard(new int[,] {
                 {0, 0, 2, 0, 0},
                   {0, 1, 1, 0, 0},
                 {0, 1, 1, 1, 0},
@@ -42,21 +42,21 @@ namespace Pegs
             })
         };
 
-        private GameBoard gameBoard = null;
-        private GameController controller = null;
+        private PegBoard gameBoard = null;
+        private PegController controller = null;
 
         static Random random = new Random();
 
         private void NewGameBtn_Click(object sender, RoutedEventArgs e)
         {
             // Choose a board to use
-            gameBoard = GameBoards[0].Clone() as GameBoard;
+            gameBoard = GameBoards[0].Clone() as PegBoard;
 
-            if (gameBoard.GetType() == typeof(TriangleGameBoard))
+            if (gameBoard.GetType() == typeof(TrianglePegBoard))
             {
-                controller = new TriangleGameController(new Views.TriangleGameView(), gameBoard);
+                controller = new TrianglePegController(new Views.TrianglePegView(), gameBoard);
             } else {
-                controller = new RectangleGameController(new Views.RectangleGameView(), gameBoard);
+                controller = new RectanglePegController(new Views.RectanglePegView(), gameBoard);
             }
 
             // Draw the board

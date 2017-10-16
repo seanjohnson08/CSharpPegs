@@ -2,11 +2,11 @@
 
 namespace Pegs.Models
 {
-    public class GameBoard : ICloneable
+    public class PegBoard : ICloneable
     {
         public PegState[,] GameState { get; private set; }
 
-        public GameBoard(int[,] board)
+        public PegBoard(int[,] board)
         {
             GameState = new PegState[board.GetLength(0), board.GetLength(1)];
             for (int i = 0; i < board.GetLength(0); i++)
@@ -34,14 +34,14 @@ namespace Pegs.Models
         }
     }
 
-    public class RectangleGameBoard : GameBoard
+    public class RectanglePegBoard : PegBoard
     {
-        public RectangleGameBoard(int[,] board) : base(board) { }
+        public RectanglePegBoard(int[,] board) : base(board) { }
     }
 
-    public class TriangleGameBoard : GameBoard
+    public class TrianglePegBoard : PegBoard
     {
-        public TriangleGameBoard(int[,] board) : base(board) { }
+        public TrianglePegBoard(int[,] board) : base(board) { }
     }
 }
 

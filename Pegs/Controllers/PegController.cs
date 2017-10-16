@@ -8,12 +8,12 @@ using Pegs.Models;
 
 namespace Pegs.Controllers
 {
-    abstract class GameController
+    abstract class PegController
     {
-        protected GameView _view;
-        protected GameBoard _model;
+        protected PegBoardView _view;
+        protected PegBoard _model;
 
-        public GameController(GameView view, GameBoard model) {
+        public PegController(PegBoardView view, PegBoard model) {
             _view = view;
             _model = model;
             _view.SetController(this);
@@ -49,9 +49,9 @@ namespace Pegs.Controllers
         }
     }
 
-    class RectangleGameController: GameController
+    class RectanglePegController: PegController
     {
-        public RectangleGameController(GameView view, GameBoard model) : base(view, model) { }
+        public RectanglePegController(PegBoardView view, PegBoard model) : base(view, model) { }
 
         public override bool IsValidMove(IntPoint from, IntPoint to)
         {
@@ -66,9 +66,9 @@ namespace Pegs.Controllers
         }
     }
 
-    class TriangleGameController: GameController
+    class TrianglePegController: PegController
     {
-        public TriangleGameController(GameView view, GameBoard model) : base(view, model) { }
+        public TrianglePegController(PegBoardView view, PegBoard model) : base(view, model) { }
 
         public override bool IsValidMove(IntPoint from, IntPoint to)
         {

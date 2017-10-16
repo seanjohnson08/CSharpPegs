@@ -62,10 +62,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\GameController.cs" />
-    <Compile Include="Models\IntPoint.cs" />
-    <Compile Include="Models\GameBoard.cs" />
-    <Compile Include="Views\GameView.cs" />
+    <Compile Include="Controllers\PegController.cs" />
+    <Compile Include="IntPoint.cs" />
+    <Compile Include="Models\PegBoard.cs" />
+    <Compile Include="Views\PegBoardView.cs" />
     <Compile Include="Views\PegDropZone.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

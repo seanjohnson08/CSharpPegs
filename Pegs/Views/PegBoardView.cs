@@ -7,15 +7,15 @@ using System.Windows.Controls;
 
 namespace Pegs.Views
 {
-    abstract class GameView
+    abstract class PegBoardView
     {
         protected PegState[,] _gameState = null;
-        protected Controllers.GameController _controller = null;
+        protected Controllers.PegController _controller = null;
 
         public virtual void RenderTo(ContentPresenter view) {}
         public abstract void Render();
         
-        public void SetController(Controllers.GameController controller)
+        public void SetController(Controllers.PegController controller)
         {
             _controller = controller;
         }
@@ -31,7 +31,7 @@ namespace Pegs.Views
         }
     }
 
-    class RectangleGameView: GameView {
+    class RectanglePegView: PegBoardView {
         private Grid _gridView = null;
 
         override public void RenderTo(ContentPresenter presenter)
@@ -95,7 +95,7 @@ namespace Pegs.Views
         }
     }
 
-    class TriangleGameView : GameView
+    class TrianglePegView : PegBoardView
     {
         public override void Render()
         {
