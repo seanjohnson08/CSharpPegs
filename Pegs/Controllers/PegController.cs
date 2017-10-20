@@ -21,7 +21,7 @@ namespace Pegs.Controllers
 
         public void LoadView(System.Windows.Controls.ContentPresenter panel)
         {
-            _view.SetGameState(_model.GameState);
+            _view.SetModel(_model);
             _view.RenderTo(panel);
             _view.Render();
         }
@@ -72,7 +72,46 @@ namespace Pegs.Controllers
 
         public override bool IsValidMove(IntPoint from, IntPoint to)
         {
-            throw new NotImplementedException();
+            //Board looks like:
+            //0 1 2 3 4 5
+            // 0 1 2 3 4
+            //0 1 2 3 4 5
+            // 0 1 2 3 4
+            
+            int rowOffset = from.Y % 2 == 0 ? 1 : 0;
+
+            return (
+                // Move Vertically...
+                Math.Abs(from.Y - to.Y) == 2 && (
+                    // Left
+                    from.X - to.X == 1 && _model.GetPeg(new IntPoint(from.X - rowOffset, (from.Y + to.Y) / 2)) == PegState.Peg ||
+                    // Right
+                    from.X - to.X == -1 && _model.GetPeg(new IntPoint(from.X + rowOffset, (from.Y + to.Y) / 2)) == PegState.Peg
+                ) ||
+
+                // Move Horizontally
+                Math.Abs(from.X - to.X) == 2 && from.Y == to.Y && _model.GetPeg(new IntPoint((from.X + to.X) / 2, (from.Y + to.Y) / 2)) == PegState.Peg
+            );
+        }
+
+        public void SwapPegs(IntPoint from, IntPoint to)
+        {
+            if (!IsValidMove(from, to))
+            {
+                return;
+            }
+
+            // Empty where the peg is leaving from
+            _model.SetPeg(from, PegState.NoPeg);
+
+            // Remove the peg that was jumped
+            // _model.SetPeg(new IntPoint((from.X + to.X) / 2, (from.Y + to.Y) / 2), PegState.NoPeg);
+
+            // Add the peg to its final destination
+            _model.SetPeg(to, PegState.Peg);
+
+            // Redraw the game board
+            _view.Render();
         }
     }
 }

@@ -9,23 +9,23 @@ namespace Pegs.Models
         public PegBoard(int[,] board)
         {
             GameState = new PegState[board.GetLength(0), board.GetLength(1)];
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (int y = 0; y < board.GetLength(0); y++)
             {
-                for (int j = 0; j < board.GetLength(1); j++)
+                for (int x = 0; x < board.GetLength(1); x++)
                 {
-                    GameState[i, j] = (PegState)board[i, j];
+                    GameState[y, x] = (PegState)board[y, x];
                 }
             }
         }
 
         public void SetPeg(IntPoint peg, PegState state)
         {
-            GameState[peg.X, peg.Y] = state;
+            GameState[peg.Y, peg.X] = state;
         }
 
         public PegState GetPeg(IntPoint peg)
         {
-            return GameState[peg.X, peg.Y];
+            return GameState[peg.Y, peg.X];
         }
 
         public object Clone()

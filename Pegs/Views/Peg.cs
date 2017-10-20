@@ -47,18 +47,22 @@ namespace Pegs
     /// </summary>
     public class Peg : Control
     {
+        private IntPoint _coordinates;
+
         static Peg()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Peg), new FrameworkPropertyMetadata(typeof(Peg)));
         }
 
+        public Peg(IntPoint coordinates)
+        {
+            _coordinates = coordinates;
+        }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            int x = Grid.GetRow(this);
-            int y = Grid.GetColumn(this);
-
             DataObject data = new DataObject();
-            data.SetData(new IntPoint(x, y));
+            data.SetData(_coordinates);
 
             DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
         }

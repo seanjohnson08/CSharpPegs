@@ -46,14 +46,17 @@ namespace Pegs
     /// </summary>
     public class PegDropZone : Control
     {
+        private IntPoint _coordinates;
+
         static PegDropZone()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PegDropZone), new FrameworkPropertyMetadata(typeof(PegDropZone)));
         }
         
-        public PegDropZone()
+        public PegDropZone(IntPoint coordinates)
         {
             this.AllowDrop = true;
+            _coordinates = coordinates;
         }
 
         public delegate void PegSwappedHandler(object sender, IntPoint from, IntPoint to);
@@ -80,7 +83,7 @@ namespace Pegs
             if (e.Data.GetDataPresent(typeof(IntPoint)))
             {
                 IntPoint from = (IntPoint)e.Data.GetData(typeof(IntPoint));
-                IntPoint to = new IntPoint(Grid.GetRow(this), Grid.GetColumn(this));
+                IntPoint to = _coordinates;
 
                 PegSwapped?.Invoke(this, from, to);
             }
