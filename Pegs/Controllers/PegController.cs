@@ -26,33 +26,14 @@ namespace Pegs.Controllers
             _view.Render();
         }
 
-        public abstract bool IsValidMove(IntPoint from, IntPoint to);
+        protected abstract bool IsValidMove(IntPoint from, IntPoint to);
         
-        public IntPoint GetMidPoint(IntPoint from, IntPoint to)
+        protected virtual IntPoint GetMidPoint(IntPoint from, IntPoint to)
         {
             return new IntPoint((from.X + to.X) / 2, (from.Y + to.Y) / 2);
         }
 
-        public abstract void SwapPegs(IntPoint from, IntPoint to);
-    }
-
-    class RectanglePegController: PegController
-    {
-        public RectanglePegController(PegBoardView view, PegBoard model) : base(view, model) { }
-
-        public override bool IsValidMove(IntPoint from, IntPoint to)
-        {
-            return (
-                    // Move horizontally
-                    Math.Abs(from.X - to.X) == 2 && from.Y == to.Y ||
-                    // Move vertically
-                    Math.Abs(from.Y - to.Y) == 2 && from.X == to.X
-                ) &&
-                    // Check to make sure there's a peg in between
-                    _model.GetPeg(GetMidPoint(from, to)) == PegState.Peg;
-        }
-
-        public override void SwapPegs(IntPoint from, IntPoint to)
+        public void SwapPegs(IntPoint from, IntPoint to)
         {
             if (!IsValidMove(from, to))
             {
@@ -73,6 +54,23 @@ namespace Pegs.Controllers
         }
     }
 
+    class RectanglePegController: PegController
+    {
+        public RectanglePegController(PegBoardView view, PegBoard model) : base(view, model) { }
+
+        protected override bool IsValidMove(IntPoint from, IntPoint to)
+        {
+            return (
+                    // Move horizontally
+                    Math.Abs(from.X - to.X) == 2 && from.Y == to.Y ||
+                    // Move vertically
+                    Math.Abs(from.Y - to.Y) == 2 && from.X == to.X
+                ) &&
+                    // Check to make sure there's a peg in between
+                    _model.GetPeg(GetMidPoint(from, to)) == PegState.Peg;
+        }
+    }
+
     class TrianglePegController: PegController
     {
         // Board looks like:
@@ -83,7 +81,7 @@ namespace Pegs.Controllers
 
         public TrianglePegController(PegBoardView view, PegBoard model) : base(view, model) { }
 
-        private IntPoint GetMidPoint(IntPoint from, IntPoint to)
+        protected override IntPoint GetMidPoint(IntPoint from, IntPoint to)
         {
             // Moving Vertically
             if (from.Y != to.Y)
@@ -110,7 +108,7 @@ namespace Pegs.Controllers
             }
         }
 
-        public override bool IsValidMove(IntPoint from, IntPoint to)
+        protected override bool IsValidMove(IntPoint from, IntPoint to)
         {
             return (
                 // Move Vertically...
@@ -124,26 +122,6 @@ namespace Pegs.Controllers
                 // Move Horizontally
                 Math.Abs(from.X - to.X) == 2 && from.Y == to.Y && _model.GetPeg(GetMidPoint(from, to)) == PegState.Peg
             );
-        }
-
-        public override void SwapPegs(IntPoint from, IntPoint to)
-        {
-            if (!IsValidMove(from, to))
-            {
-                return;
-            }
-
-            // Empty where the peg is leaving from
-            _model.SetPeg(from, PegState.NoPeg);
-
-            // Remove the peg that was jumped
-            _model.SetPeg(GetMidPoint(from, to), PegState.NoPeg);
-
-            // Add the peg to its final destination
-            _model.SetPeg(to, PegState.Peg);
-
-            // Redraw the game board
-            _view.Render();
         }
     }
 }
