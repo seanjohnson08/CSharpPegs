@@ -50,7 +50,7 @@ namespace Pegs
         private void NewGameBtn_Click(object sender, RoutedEventArgs e)
         {
             // Choose a board to use
-            gameBoard = GameBoards[1].Clone() as PegBoard;
+            gameBoard = GameBoards[random.Next(2)].Clone() as PegBoard;
 
             if (gameBoard.GetType() == typeof(TrianglePegBoard))
             {

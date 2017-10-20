@@ -6,6 +6,8 @@ namespace Pegs.Models
     {
         public PegState[,] GameState { get; private set; }
 
+        public PegBoard() { }
+
         public PegBoard(int[,] board)
         {
             GameState = new PegState[board.GetLength(0), board.GetLength(1)];
@@ -30,7 +32,10 @@ namespace Pegs.Models
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            PegBoard clone = this.MemberwiseClone() as PegBoard;
+            // MemberwiseClone only does shallow clone, so GameState needs to be cloned as well
+            clone.GameState = GameState.Clone() as PegState[,];
+            return clone;
         }
     }
 
