@@ -19,10 +19,10 @@ namespace Pegs.Controllers
             _view.SetController(this);
         }
 
-        public void LoadView(System.Windows.Controls.ContentPresenter panel)
+        public void LoadView(System.Windows.Controls.ContentPresenter output)
         {
             _view.SetModel(_model);
-            _view.RenderTo(panel);
+            _view.RenderTo(output);
             _view.Render();
         }
 

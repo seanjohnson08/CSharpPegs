@@ -8,7 +8,10 @@
         Title="Pegs" Height="300" Width="300">
     <DockPanel>
         <Menu VerticalAlignment="Top" DockPanel.Dock="Top">
-            <MenuItem x:Name="NewGameBtn" Header="New Game" Click="NewGameBtn_Click"/>
+            <MenuItem x:Name="NewGameBtn" Header="New Game">
+                <MenuItem x:Name="TriangleGameBtn" Header="Triangle" HorizontalAlignment="Left" Click="TriangleGameBtn_Click"/>
+                <MenuItem x:Name="CrossGameBtn" Header="Cross" HorizontalAlignment="Left" Click="CrossGameBtn_Click"/>
+            </MenuItem>
         </Menu>
         <Viewbox>
             <ContentPresenter x:Name="MainView" MinWidth="300" MinHeight="300">

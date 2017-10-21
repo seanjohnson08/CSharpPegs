@@ -23,44 +23,61 @@ namespace Pegs
             InitializeComponent();
         }
 
-        private PegBoard[] GameBoards = new PegBoard[] {
-            new RectanglePegBoard(new int[,] {
-                {0, 0, 1, 1, 1, 0, 0},
-                {0, 0, 1, 1, 1, 0, 0},
-                {1, 1, 1, 1, 1, 1, 1},
-                {1, 1, 1, 2, 1, 1, 1},
-                {1, 1, 1, 1, 1, 1, 1},
-                {0, 0, 1, 1, 1, 0, 0},
-                {0, 0, 1, 1, 1, 0, 0},
-            }),
-            new TrianglePegBoard(new int[,] {
-                {0, 0, 2, 0, 0},
-                  {0, 1, 1, 0, 0},
-                {0, 1, 1, 1, 0},
-                  {1, 1, 1, 1, 0},
-                {1, 1, 1, 1, 1},
-            })
+        private enum GameType { Triangle, Cross }
+
+        private Dictionary<GameType, PegBoard> GameBoards = new Dictionary<GameType, PegBoard> {
+            {
+                GameType.Cross,
+                new RectanglePegBoard(new int[,] {
+                    {0, 0, 1, 1, 1, 0, 0},
+                    {0, 0, 1, 1, 1, 0, 0},
+                    {1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 2, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1},
+                    {0, 0, 1, 1, 1, 0, 0},
+                    {0, 0, 1, 1, 1, 0, 0},
+                })
+            },
+            {
+                GameType.Triangle,
+                new TrianglePegBoard(new int[,] {
+                    {0, 0, 2, 0, 0},
+                      {0, 1, 1, 0, 0},
+                    {0, 1, 1, 1, 0},
+                      {1, 1, 1, 1, 0},
+                    {1, 1, 1, 1, 1},
+                })
+            }
         };
 
         private PegBoard gameBoard = null;
         private PegController controller = null;
 
         static Random random = new Random();
-
-        private void NewGameBtn_Click(object sender, RoutedEventArgs e)
+        
+        private void NewGame(GameType gameType)
         {
-            // Choose a board to use
-            gameBoard = GameBoards[random.Next(2)].Clone() as PegBoard;
-
-            if (gameBoard.GetType() == typeof(TrianglePegBoard))
+            gameBoard = GameBoards[gameType].Clone() as PegBoard;
+            
+            if (gameType == GameType.Cross)
+            {
+                controller = new RectanglePegController(new Views.RectanglePegView(), gameBoard);
+            } else if (gameType == GameType.Triangle)
             {
                 controller = new TrianglePegController(new Views.TrianglePegView(), gameBoard);
-            } else {
-                controller = new RectanglePegController(new Views.RectanglePegView(), gameBoard);
             }
+            
+            controller.LoadView(MainView);
+        }
 
-            // Draw the board
-            controller.LoadView(this.MainView);
+        private void TriangleGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewGame(GameType.Triangle);
+        }
+
+        private void CrossGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewGame(GameType.Cross);
         }
     }
 }
