@@ -11,8 +11,6 @@ using Pegs.Controllers;
 
 namespace Pegs
 {
-    public enum PegState { Invalid, Peg, NoPeg };
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -23,11 +21,9 @@ namespace Pegs
             InitializeComponent();
         }
 
-        private enum GameType { Triangle, Cross }
-
-        private Dictionary<GameType, PegBoard> GameBoards = new Dictionary<GameType, PegBoard> {
+        private Dictionary<PegGameType, PegBoard> GameBoards = new Dictionary<PegGameType, PegBoard> {
             {
-                GameType.Cross,
+                PegGameType.Cross,
                 new RectanglePegBoard(new int[,] {
                     {0, 0, 1, 1, 1, 0, 0},
                     {0, 0, 1, 1, 1, 0, 0},
@@ -39,7 +35,7 @@ namespace Pegs
                 })
             },
             {
-                GameType.Triangle,
+                PegGameType.Triangle,
                 new TrianglePegBoard(new int[,] {
                     {0, 0, 2, 0, 0},
                       {0, 1, 1, 0, 0},
@@ -55,29 +51,23 @@ namespace Pegs
 
         static Random random = new Random();
         
-        private void NewGame(GameType gameType)
+        private void NewGame(PegGameType gameType)
         {
             gameBoard = GameBoards[gameType].Clone() as PegBoard;
-            
-            if (gameType == GameType.Cross)
-            {
-                controller = new RectanglePegController(new Views.RectanglePegView(), gameBoard);
-            } else if (gameType == GameType.Triangle)
-            {
-                controller = new TrianglePegController(new Views.TrianglePegView(), gameBoard);
-            }
+
+            controller = PegControllerFactory.CreateForGameType(gameType, gameBoard);
             
             controller.LoadView(MainView);
         }
 
         private void TriangleGameBtn_Click(object sender, RoutedEventArgs e)
         {
-            NewGame(GameType.Triangle);
+            NewGame(PegGameType.Triangle);
         }
 
         private void CrossGameBtn_Click(object sender, RoutedEventArgs e)
         {
-            NewGame(GameType.Cross);
+            NewGame(PegGameType.Cross);
         }
     }
 }

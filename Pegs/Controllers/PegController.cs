@@ -124,4 +124,20 @@ namespace Pegs.Controllers
             );
         }
     }
+
+    class PegControllerFactory
+    {
+        static public PegController CreateForGameType(PegGameType gameType, PegBoard gameBoard)
+        {
+            if (gameType == PegGameType.Cross)
+            {
+                return new RectanglePegController(new RectanglePegView(), gameBoard);
+            }
+            else if (gameType == PegGameType.Triangle)
+            {
+                return new TrianglePegController(new TrianglePegView(), gameBoard);
+            }
+            return null;
+        }
+    }
 }

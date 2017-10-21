@@ -71,6 +71,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\PegController.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="IntPoint.cs" />
     <Compile Include="Models\PegBoard.cs" />
     <Compile Include="Views\PegBoardView.cs" />
